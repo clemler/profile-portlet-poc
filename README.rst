@@ -1,32 +1,30 @@
 =======================
-User Management Portlet
+Profile Portlet POC
 =======================
 :Author: Chris Lemler <christian.lemler@sungard.com>
-:Date: 2012-07-31
-:Description: Example jQuery/Bootstrap portlet for managing users
+:Date: 2012-09-29
+:Description: Example jQuery/Bootstrap portlet for editing a user's profile
 
 Overview
 ========
-This portlet demonstrates building a sample User Management feature leveraging the Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax to retrieve static resources (files), and resourceURL's for real ajax calls.
+This portlet demonstrates building a sample user profile editor leveraging the Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax to retrieve static resources (files), and resourceURL's for real ajax calls.
 
 Requirements
 ============
-Develop a Document Repository portlet as follows:
- 
-* Develop UI based on the attached UI and interaction specification
-* Load initial set of documents from a static file on the server (e.g. csv, json, xml...). Each document will have a unique ID to identify the document (not the document name).
-* The documents will be displayed in a resizable tile layout. As the browser grows larger, more tiles should be shown. When the browser is made smaller, fewer tiles should be shown.
-* Each tile will show the documents Name, Author, and an optional Tag.
-* When a user selects a document tile, a modal popup form is displayed. The form will let the user change the Name, Author, or Tag of the document.
-    * Each document MUST have a Name and an Author.
-    * The user can select Ok or Cancel to close the dialog.
-    * If OK is selected, save the data to the server. This can be done by updating the resource file, or logging a message with the new values to catalina.out.
-* User can rename documents, and the changes should be "persisted" to memory.
-* Portlet must be resizable and leverage all browser real-estate
-* Track the number of hours spent building the portlet
-* Track challenges, stumbling blocks etc.
+The profile portlet will behave as follows:
 
-This is another paragraph
+* Initial screen will display a single 'Edit Profile' button. Selecting the
+button will cause the profile editor modal to be displayed.
+* The profile editor is a modal window which initially shows the information
+in read-only mode.
+    * Selecting the 'Edit' button will make the fields editable, and replace the
+      'Edit' button with a 'Save' and 'Cancel 'button'.
+    * If the users selectes Save, perform an ajax call to a Liferay resourceURL
+      to save the changes.
+
+The portlet will leverage SLF4J for logginf messages using the new vararg interface.
+
+
 
 User Interface
 ===============
