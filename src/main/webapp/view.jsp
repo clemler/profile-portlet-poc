@@ -23,6 +23,10 @@
 
 <portlet:defineObjects />
 
+<!-- Declare resourceUrl's to retrieve a user's profile, and to update a user's profile -->
+<portlet:resourceURL var="getProfileUrl" id="get-profile"> </portlet:resourceURL>
+<portlet:resourceURL var="updateProfileUrl" id="update-profile"> </portlet:resourceURL>
+
 <!-- Load the 3d Party Javascript libraries -->
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="/profile-portlet-poc/js/lib/bootstrap.js"></script>

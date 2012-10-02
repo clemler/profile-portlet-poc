@@ -22,13 +22,7 @@ CLL.UserProfile = (function () {
     //=======================================
     // Private Module Variables Here
     //=======================================
-    var userList,                               // Will point to an array of objects
-        MAX_TILE_COLUMNS = 12,                  // Bootstrap uses a 12 column model
-        SINGLE_TILE_ROW_SPAN = 2,               // Used by Bootstrap
-        BLOCK_TILE_ROW_SPAN = 3,                // Used by Bootstrap
-        VIEW_CONTAINER_ID = "#CLL-user-view",   // The ID of the container <div>
-        userDetailsEditable = false,            // Tracks whether modal is in Edit mode
-        ROW_DIV_OPEN = '<div class="row-fluid"> <!-- START of a new row-fluid -->',
+    var ROW_DIV_OPEN = '<div class="row-fluid"> <!-- START of a new row-fluid -->',
         ROW_DIV_CLOSE = '</div> <!-- END of a row-fluid -->',
         TILELINE_DIV_OPEN = '<div class="span2 tile-single bgcolor5">',
         TILEBLOCK_DIV_OPEN = '<div class="span3 tile-block bgcolorTransparent">',
@@ -43,6 +37,13 @@ CLL.UserProfile = (function () {
     //=======================================
     // Private Module Functions Here
     //=======================================
+
+    // Retrieve the profile for the named user and display the info
+    // in a modal popup.
+    function displayUserProfile(user) {
+        console.log("Entered displayUserProfile(" + user + ")");
+        var foo = ::;
+    }
 
 
     // Construct the HTML for a single tile. Function takes a single parameter
@@ -63,80 +64,6 @@ CLL.UserProfile = (function () {
                '</div>';  // Closes the TILE_DIV
 
         return tile;
-    }
-
-
-    // Construct the HTML for a block tile. Function takes a single parameter
-    // which is the Object containing the users details (e.g. id, name...)
-    function constructBlockTile(user) {
-        var tile = "";
-
-        tile = TILEBLOCK_DIV_OPEN +
-               BOTTOMLINE_DIV_OPEN +
-               '<li>' + user.name + '</li>' +
-               '<li>' + user.email + '</li>' +
-               '<li>' + user.phone + '</li>' +
-               BOTTOMLINE_DIV_CLOSE +
-               GOLEFT_DIV_OPEN +
-               '<i id="' + user.id + '" ' + 'class="iconsg-b-r7c2-edit user-mgmt-edit-icon"></i>' +
-               '</div>' + // Closes the GOLEFT_DIV
-               GORIGHT_DIV_OPEN +
-               (user.active ? '<i class="iconsg-b-r3c8-active"></i>' : '<i class="iconsg-b-r3c9-inactive"></i>') +
-               '</div>' + // Closes the GORIGHT_DIV
-               '</div>';  // Closes the TILE_DIV
-
-        return tile;
-    }
-
-
-    // Render the tiles in line mode (showing a single value). For user
-    // management we will display the person's name in the tile.
-    function renderLineTiles(containerId) {
-        console.log("Entered renderLineTiles(" + containerId + ")");
-        var needRowDivClose = false,    // Track if e need to close the div
-            currentRowDiv,              // Reference to the current row <div>
-            tileDiv,                    // Outer <div> for a tile
-            i;
-
-        // Clear any existing content in the container. empty() will remove all
-        // child DOM elements of containerId, and make certain to remove any
-        // actions/handlers associated with child elements.
-        $(containerId).empty();
-
-        // Render the tiles. We must insert a row-fluid element each time the sum of
-        // of the tile spans equals MAX_TILE_COLUMNSCreate the tiles for each line item
-        for (i in userList) {
-
-            // If modulo returns 0 insert a ROW_DIV_OPEN
-            if (((i * SINGLE_TILE_ROW_SPAN) % MAX_TILE_COLUMNS) === 0) {
-
-                //Check if there is a previous open div that needs to be closed
-                if (needRowDivClose) {
-                    $(ROW_DIV_CLOSE).appendTo($(containerId));
-                    needRowDivClose = false;
-                }
-
-                // Open a new row
-                currentRowDiv = $(ROW_DIV_OPEN);
-                currentRowDiv.appendTo($(containerId));
-                needRowDivClose = true;
-            }
-
-            // Construct a tile and append to the current row
-            tileDiv = constructLineTile(userList[i]);
-            $(tileDiv).appendTo(currentRowDiv);
-        }
-
-        // Append a final close <div> if needed
-        if (needRowDivClose) {
-            $(ROW_DIV_CLOSE).appendTo($(containerId));
-            needRowDivClose = false;
-        }
-
-        // Register a click handler for each tile
-        // I am using a class selector. This may not be appropriate since
-        // there may be other elements on the screen with this class.
-        $(".user-mgmt-edit-icon").click(self.onShowUserDetails);
     }
 
 
@@ -188,47 +115,6 @@ CLL.UserProfile = (function () {
         // I am using a class selector. This may not be appropriate since
         // there may be other elements on the screen with this class.
         $(".user-mgmt-edit-icon").click(self.onShowUserDetails);
-    }
-
-
-    // Render the users in a traditional table (i.e. not tiles).
-    // jqGrid expects the content to be in a <table> so construct a
-    // a <table>, and then append the jqGrid and the associated rows
-    function renderGrid(containerId) {
-        var tableElem, nameDiv, emailDiv, phoneDiv, tileDiv;
-        console.log("Entered renderGrid(" + containerId + ")");
-
-        // Clear any existing content in the container.
-        // It is debatable if this belongs here - as it is
-        // a hidden side effect of this method. It may be
-        // better to clear the contents as a separate step 
-        // in the code that calls this method.
-        $(containerId).empty();
-
-        // Create the table element needed by jGrid
-        $('<table id="CLL-user-table"></table>').appendTo($(containerId));
-    
-        // Create the jqGrid and attache to the table
-        ("#CLL-user-table").jqGrid({
-            datatype: "local",
-            height: 250,
-            colNames: ['UID','Name', 'Email', 'Phone'],
-            colModel: [
-                {name:'id',index:'id', width:60, sorttype:"int"},
-                {name:'name',index:'name', width:90, sorttype:"string"},
-                {name:'email',index:'email', width:100},
-                {name:'phone',index:'phone', width:80} 
-            ],
-            multiselect: false,
-            caption: "Manipulating Array Data"
-        });
-        
-        console.log("jqGrid just constructed, now adding rows...");
-        
-        // Append the data to the table
-        for(var i=0; i <= userList.length;i++) {
-            jQuery("#CLL-user-table").jqGrid('addRowData',i+1,userList[i]);
-        }
     }
 
 
