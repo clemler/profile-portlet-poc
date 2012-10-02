@@ -31,6 +31,8 @@ CLL.UserProfile = (function () {
         BOTTOMLINE_DIV_CLOSE = '</ul></div>',
         GOLEFT_DIV_OPEN = '<div class="goLeft">',
         GORIGHT_DIV_OPEN = '<div class="goRight">',
+        //profileResourceUrl = "<%=getProfileUrl%>",
+        profileResourceUrl = "<%=resourceUrl%>",
         self;
 
 
@@ -40,9 +42,12 @@ CLL.UserProfile = (function () {
 
     // Retrieve the profile for the named user and display the info
     // in a modal popup.
-    function displayUserProfile(user) {
-        console.log("Entered displayUserProfile(" + user + ")");
-        var foo = ::;
+    function displayUserProfile(userId) {
+        console.log("Entered displayUserProfile(" + userId + ")");
+        console.log("URL = " + self.profileURL);
+        
+        // Obtain the user data via ajax and render it in line mode
+        $.get(self.profileURL);
     }
 
 
@@ -125,19 +130,9 @@ CLL.UserProfile = (function () {
     function registerViewHandlers() {
         console.log("Entered registerViewHandlers()");
 
-        // The onclick handler for tile-single button
-        $("#CLL-display-tile-single").click(function () {
-            renderLineTiles(VIEW_CONTAINER_ID);
-        });
-
-        //The onclick handler for tile-block button
-        $("#CLL-display-tile-block").click(function () {
-            renderBlockTiles(VIEW_CONTAINER_ID);
-        });
-
-        //The onclick handler for tile-list button
-        $("#CLL-display-tile-grid").click(function () {
-            renderGrid(VIEW_CONTAINER_ID);
+        // The onclick handler for Click Me button
+        $("#click-me-div").click(function () {
+            displayUserProfile("Fred");
         });
     }
 
@@ -165,6 +160,7 @@ CLL.UserProfile = (function () {
     // Public Module Variables and Functions
     //=======================================
     return {
+        profileURL: "",
 
         // Initialize the UserProfile module. This method must be called prior to
         // any other operations.
@@ -176,31 +172,17 @@ CLL.UserProfile = (function () {
             registerViewHandlers();
             
             // Obtain the user data via ajax and render it in line mode
-            $.getJSON("/UserManagementPOC-portlet/json/userdata.json",
-                function (data) {
-                    console.log("Received JSON data: " + data);
-                    userList = data.users;
-                    renderLineTiles(VIEW_CONTAINER_ID);
-            }).error(function(jqXHR, textStatus, errorThrown) {
-                console.log("error " + textStatus);
-                console.log("incoming Text " + jqXHR.responseText);
-                alert("Unable to load the user data. Refresh the page, or call support if the problem persists.");
-            });
+            //$.getJSON("/UserManagementPOC-portlet/json/userdata.json",
+            //    function (data) {
+            //        console.log("Received JSON data: " + data);
+            //        userList = data.users;
+            //        renderLineTiles(VIEW_CONTAINER_ID);
+            //}).error(function(jqXHR, textStatus, errorThrown) {
+            //    console.log("error " + textStatus);
+            //    console.log("incoming Text " + jqXHR.responseText);
+            //    alert("Unable to load the user data. Refresh the page, or call support if the problem persists.");
+            //});
         },
-
-
-        // A dummy function to test scoping 
-        doSomething: function () {
-            console.log("Entered UserProfile.doSomething()");
-            this.doMore();
-        },
-
-
-        // A dummy function to test scoping 
-        doMore: function () {
-            console.log("Entered UserProfile.doMore()");
-        },
-
 
         // A dummy function to test scoping 
         doName: function (name) {

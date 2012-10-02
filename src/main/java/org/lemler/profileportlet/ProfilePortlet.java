@@ -42,6 +42,21 @@ public class ProfilePortlet extends GenericPortlet {
     
     
     /**
+     * Handles resourceUrls in support of various client ajax calls.
+     * 
+     * @param request
+     * @param response
+     * @throws PortletException
+     * @throws IOException
+     */
+    public void serveResource(RenderRequest request, RenderResponse response)
+        throws PortletException, IOException {        
+        
+        log.error("Entered serveResource()");
+    }
+
+    
+    /**
      *
      * Does something really cool
      *

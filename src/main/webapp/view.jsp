@@ -25,14 +25,13 @@
 
 <!-- Declare resourceUrl's to retrieve a user's profile, and to update a user's profile -->
 <portlet:resourceURL var="getProfileUrl" id="get-profile"> </portlet:resourceURL>
-<portlet:resourceURL var="updateProfileUrl" id="update-profile"> </portlet:resourceURL>
 
 <!-- Load the 3d Party Javascript libraries -->
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="/profile-portlet-poc/js/lib/bootstrap.js"></script>
+<script type="text/javascript" src="/profile-portlet/js/lib/bootstrap.js"></script>
 
 <!-- Load the profile-portlet-poc libraries -->
-<script type="text/javascript" src="/profile-portlet-poc/js/user-profile-module.js"></script>
+<script type="text/javascript" src="/profile-portlet/js/user-profile-module.js"></script>
  
  <!-- Once the document and jquery have loaded, render the page-->   
 <script type="text/javascript">
@@ -41,8 +40,12 @@
     
     // Initialize CLL.UserProfile
     CLL.UserProfile.init();
+    CLL.UserProfile.profileURL = '<%=getProfileUrl%>';
+    console.log("profileURL --> " + CLL.UserProfile.profileURL);
   });
 </script>
 
 
 This is the <b>profile-portlet-poc</b>.
+
+<div id="click-me-div">Click Me</div>
