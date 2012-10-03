@@ -7,7 +7,9 @@ Profile Portlet POC
 
 Overview
 ========
-This portlet demonstrates building a sample user profile editor leveraging the Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax to retrieve static resources (files), and resourceURL's for real ajax calls.
+This portlet demonstrates building a sample user profile editor leveraging the
+Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax
+to retrieve static resources (files), and resourceURL's for real ajax calls.
 
 Requirements
 ============
@@ -19,7 +21,7 @@ button will cause the profile editor modal to be displayed.
 in read-only mode.
     * Selecting the 'Edit' button will make the fields editable, and replace the
       'Edit' button with a 'Save' and 'Cancel 'button'.
-    * If the users selectes Save, perform an ajax call to a Liferay resourceURL
+    * If the users selects Save, perform an ajax call to a Liferay resourceURL
       to save the changes.
 
 The portlet will leverage SLF4J for logginf messages using the new vararg interface.
