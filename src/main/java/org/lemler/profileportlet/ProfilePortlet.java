@@ -9,6 +9,8 @@ import java.io.IOException;
 import javax.portlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.gson.Gson;
+import org.lemler.profileportlet.UserProfile;
 
 
 public class ProfilePortlet extends GenericPortlet {
@@ -86,6 +88,19 @@ public class ProfilePortlet extends GenericPortlet {
         
         // Obtain the requested UserID and query for the users profile info
         // userID = request.getParameter("userID");
+        
+        // Construct a dummy UserProfile to pass back to the client
+        // Later this code can be replaced with a call to a DB, LDAP etc.
+        UserProfile profile = new UserProfile("fred@flinstone.org", "Fred", "Flintstone", "123-456-8989");
+        Gson gson = new Gson();
+        
+        // convert java object to JSON format,
+        // and returned as JSON formatted string
+        String json = gson.toJson(profile);
+        log.info("Profile JSON: {}", json);
+        
+        //write string to the output stream and we´re finished  
+        response.getPortletOutputStream().write(json.getBytes());
      }
 
     

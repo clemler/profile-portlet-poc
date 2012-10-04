@@ -48,7 +48,8 @@ CLL.UserProfile = (function () {
         
         // Obtain the user data via ajax and render it in line mode
         $.get( self.profileURL, function (data, status, jqXHR) {
-            console.log("Ajax SUCCEEDED");
+            console.log("Ajax Succeeded. Data = " + data);
+            console.log("---> userID: " + data["userID"]);
         }, "json").error( function (data, status, jqXHR) {
             console.log("Ajax FAILED - " + status);
         });
