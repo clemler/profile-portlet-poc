@@ -8,7 +8,7 @@
     <name>profile-portlet-poc</name>
     <version>1.0-SNAPSHOT</version>
     <properties>
-    <liferay.auto.deploy.dir>/Users/christian.lemler/server/liferay/deploy</liferay.auto.deploy.dir>
+    <liferay.auto.deploy.dir>/Users/ctlemler/server/liferay/deploy</liferay.auto.deploy.dir>
     <liferay.version>6.1.1</liferay.version>
   </properties>
     <build>

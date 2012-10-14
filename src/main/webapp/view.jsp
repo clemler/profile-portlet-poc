@@ -23,6 +23,10 @@
 <%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
 
 <portlet:defineObjects />
+<!-- Load the Style Sheets -->
+<link href="/profile-portlet/css/main.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/profile-portlet/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen"  />
+<link href="/profile-portlet/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen"  />
 
 <!-- Load the 3d Party Javascript libraries -->
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -49,3 +53,48 @@
 This is the <b>profile-portlet-poc</b>.
 
 <div id="click-me-div">Click Me</div>
+<button id="displayProfileModal" type="button" class="btn" data-loading-text="loading stuff..." >Sample</button>
+
+<-- Button to trigger modal -->
+<a href="#profileModal" role="button" class="btn" data-toggle="modal">Launch profile modal</a>
+ 
+<-- Modal -->
+<div class="modal hide fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="profileModalLabel">My Profile</h3>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="userID">User ID:</label>
+            <div class="controls">
+                <input type="text" id="userID" placeholder="name@mydomain.com">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="firstName">First Name:</label>
+            <div class="controls">
+                <input type="text" id="firstName" placeholder="Name">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="lastName">Last Name:</label>
+            <div class="controls">
+                <input type="text" id="lastName" placeholder="Last Name">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="phoneNumber">Phone Number:</label>
+            <div class="controls">
+                <input type="text" id="phoneNumber" placeholder="222-333-1122">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn">Cancel</button>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer"></div>
+</div>

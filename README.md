@@ -5,14 +5,13 @@ Profile Portlet POC
 :Date: 2012-09-29
 :Description: Example jQuery/Bootstrap portlet for editing a user's profile
 
-Overview
-========
+# Overview
 This portlet demonstrates building a sample user profile editor leveraging the
 Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax
 to retrieve static resources (files), and resourceURL's for real ajax calls.
 
-Requirements
-============
+# Requirements
+
 The profile portlet will behave as follows:
 
 * Initial screen will display a single 'Edit Profile' button. Selecting the

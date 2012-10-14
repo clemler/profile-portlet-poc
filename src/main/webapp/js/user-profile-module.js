@@ -50,6 +50,7 @@ CLL.UserProfile = (function () {
         $.get( self.profileURL, function (data, status, jqXHR) {
             console.log("Ajax Succeeded. Data = " + data);
             console.log("---> userID: " + data["userID"]);
+            $("#userID").val(data["userID"]);
         }, "json").error( function (data, status, jqXHR) {
             console.log("Ajax FAILED - " + status);
         });
@@ -132,11 +133,11 @@ CLL.UserProfile = (function () {
     // is shown as a tile-line, tile-block, or a grid. Each callback
     // recives the jQuery identifier for the ADDA in which the content
     // shoud be displayed ('#CLL-user-grid')
-    function registerViewHandlers() {
-        console.log("Entered registerViewHandlers()");
+    function registerHandlers() {
+        console.log("Entered registerHandlers()");
 
         // The onclick handler for Click Me button
-        $("#click-me-div").click(function () {
+        $("#displayProfileModal").click(function () {
             displayUserProfile("Fred");
         });
     }
@@ -174,7 +175,7 @@ CLL.UserProfile = (function () {
             self = this;    // Obtain reference to 'this' for private functions
             
             // Register the handlers that render the various types of views
-            registerViewHandlers();
+            registerHandlers();
             
             // Obtain the user data via ajax and render it in line mode
             //$.getJSON("/UserManagementPOC-portlet/json/userdata.json",
