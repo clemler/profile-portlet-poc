@@ -91,7 +91,7 @@ public class ProfilePortlet extends GenericPortlet {
         
         // Construct a dummy UserProfile to pass back to the client
         // Later this code can be replaced with a call to a DB, LDAP etc.
-        UserProfile profile = new UserProfile("fred@flinstone.org", "Fred", "Flintstone", "123-456-8989");
+        UserProfile profile = new UserProfile("fred@flinstone.org", "Fred", "Flintstone", "");
         Gson gson = new Gson();
         
         // convert java object to JSON format,

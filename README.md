@@ -1,14 +1,13 @@
-=======================
-Profile Portlet POC
-=======================
-:Author: Chris Lemler <christian.lemler@sungard.com>
-:Date: 2012-09-29
-:Description: Example jQuery/Bootstrap portlet for editing a user's profile
+% User Profile Portlet POC
+% Chris Lemler
+% October 15, 2012
 
 # Overview
-This portlet demonstrates building a sample user profile editor leveraging the
-Liferay Maven Plugin, a Javascript UI, and the server side developed using ajax
-to retrieve static resources (files), and resourceURL's for real ajax calls.
+This portlet demonstrates building a simple user profile editor leveraging the
+Liferay Maven Plugin, jQuery and Bootstrap for the UI, and portlet resourceURL's
+to handle Ajax requests for retrieving and updating a user's profile. My goal is
+to learn to develop content in more of a 'Web 2.0' fashion using Ajax, versus the
+common portlet View, Edit, Help rendering methods. 
 
 # Requirements
 

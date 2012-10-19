@@ -31,6 +31,8 @@
 <!-- Load the 3d Party Javascript libraries -->
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="/profile-portlet/js/lib/bootstrap.js"></script>
+<script type="text/javascript" src="/profile-portlet/js/lib/underscore.js"></script>
+
 
 <!-- Load the profile-portlet-poc libraries -->
 <script type="text/javascript" src="/profile-portlet/js/user-profile-module.js"></script>
@@ -49,23 +51,17 @@
   });
 </script>
 
-
-This is the <b>profile-portlet-poc</b>.
-
-<div id="click-me-div">Click Me</div>
-<button id="displayProfileModal" type="button" class="btn" data-loading-text="loading stuff..." >Sample</button>
-
-<-- Button to trigger modal -->
-<a href="#profileModal" role="button" class="btn" data-toggle="modal">Launch profile modal</a>
+<h3>Welcome to the Profile Portlet POC</h3>
+<button id="displayProfileModal" type="button" class="btn" data-loading-text="loading stuff..." >Edit Profile</button>
  
-<-- Modal -->
+<!-- Modal -->
 <div class="modal hide fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
     <h3 id="profileModalLabel">My Profile</h3>
   </div>
   <div class="modal-body">
-    <form class="form-horizontal">
+    <form id="profileForm" class="well form-horizontal">
         <div class="control-group">
             <label class="control-label" for="userID">User ID:</label>
             <div class="controls">
@@ -91,8 +87,7 @@ This is the <b>profile-portlet-poc</b>.
             </div>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            <button type="button" class="btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </form>
   </div>

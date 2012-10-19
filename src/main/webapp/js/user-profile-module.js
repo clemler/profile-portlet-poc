@@ -22,17 +22,8 @@ CLL.UserProfile = (function () {
     //=======================================
     // Private Module Variables Here
     //=======================================
-    var ROW_DIV_OPEN = '<div class="row-fluid"> <!-- START of a new row-fluid -->',
-        ROW_DIV_CLOSE = '</div> <!-- END of a row-fluid -->',
-        TILELINE_DIV_OPEN = '<div class="span2 tile-single bgcolor5">',
-        TILEBLOCK_DIV_OPEN = '<div class="span3 tile-block bgcolorTransparent">',
-        BOTTOMLINE_DIV_OPEN = '<div class="bottomLine">' +
-                              '<ul class="tile-data">',
-        BOTTOMLINE_DIV_CLOSE = '</ul></div>',
-        GOLEFT_DIV_OPEN = '<div class="goLeft">',
-        GORIGHT_DIV_OPEN = '<div class="goRight">',
-        //profileResourceUrl = "<%=getProfileUrl%>",
-        profileResourceUrl = "<%=resourceUrl%>",
+    var originalProfile = null,         // Stores original object received via ajax
+        modifiedProfile = null,         // Stores the values entered into the modal
         self;
 
 
@@ -42,7 +33,7 @@ CLL.UserProfile = (function () {
 
     // Retrieve the profile for the named user and display the info
     // in a modal popup.
-    function displayUserProfile(userId) {
+    function loadUserProfile(userId) {
         console.log("Entered displayUserProfile(" + userId + ")");
         console.log("URL = " + self.profileURL);
         
@@ -50,82 +41,45 @@ CLL.UserProfile = (function () {
         $.get( self.profileURL, function (data, status, jqXHR) {
             console.log("Ajax Succeeded. Data = " + data);
             console.log("---> userID: " + data["userID"]);
-            $("#userID").val(data["userID"]);
+            originalProfile = data;
+            modifiedProfile = _.clone(originalProfile); // Only works for a shallow copy
+            showUserProfile();
         }, "json").error( function (data, status, jqXHR) {
             console.log("Ajax FAILED - " + status);
+            alert("Could not retrieve the profile for " + userId);
         });
     }
-
-
-    // Construct the HTML for a single tile. Function takes a single parameter
-    // which is the Object containing the users details (e.g. id, name...)
-    function constructLineTile(user) {
-        var tile = "";
-
-        tile = TILELINE_DIV_OPEN +
-               BOTTOMLINE_DIV_OPEN +
-               '<li>' + user.name + '</li>' +
-               BOTTOMLINE_DIV_CLOSE +
-               GOLEFT_DIV_OPEN +
-               '<i id="' + user.id + '" ' + 'class="iconsg-b-r7c2-edit user-mgmt-edit-icon"></i>' +
-               '</div>' + // Closes the GOLEFT_DIV
-               GORIGHT_DIV_OPEN +
-               (user.active ? '<i class="iconsg-b-r3c8-active"></i>' : '<i class="iconsg-b-r3c9-inactive"></i>') +
-               '</div>' + // Closes the GORIGHT_DIV
-               '</div>';  // Closes the TILE_DIV
-
-        return tile;
-    }
-
-
-    // Render the tiles in line mode (showing a single value). For user
-    // management we will display the person's name in the tile.
-    function renderBlockTiles(containerId) {
-        console.log("Entered renderLineTiles(" + containerId + ")");
-        var needRowDivClose = false,    // Track if e need to close the div
-            currentRowDiv,              // Reference to the current row <div>
-            tileDiv,                    // Outer <div> for a tile
-            i;
-
-        // Clear any existing content in the container. empty() will remove all
-        // child DOM elements of containerId, and make certain to remove any
-        // actions/handlers associated with child elements.
-        $(containerId).empty();
-
-        // Render the tiles. We must insert a row-fluid element each time the sum of
-        // of the tile spans equals MAX_TILE_COLUMNSCreate the tiles for each line item
-        for (i in userList) {
-
-            // If modulo returns 0 insert a ROW_DIV_OPEN
-            if (((i * BLOCK_TILE_ROW_SPAN) % MAX_TILE_COLUMNS) === 0) {
-
-                //Check if there is a previous open div that needs to be closed
-                if (needRowDivClose) {
-                    $(ROW_DIV_CLOSE).appendTo($(containerId));
-                    needRowDivClose = false;
-                }
-
-                // Open a new row
-                currentRowDiv = $(ROW_DIV_OPEN);
-                currentRowDiv.appendTo($(containerId));
-                needRowDivClose = true;
+    
+    // Populate the modal with the users information, and
+    // Display the popup on the screen.
+    function showUserProfile() {
+        var key, formField;
+        console.log("Entered showUserProfile()");
+        
+        for (key in originalProfile) {
+            // Check if the field is empty (designated by ""). If not
+            // populate the form with the value
+            if ("" !== modifiedProfile[key]) {
+                formField = "#" + key;
+                $(formField).val(modifiedProfile[key]);
             }
-
-            // Construct a tile and append to the current row
-            tileDiv = constructBlockTile(userList[i]);
-            $(tileDiv).appendTo(currentRowDiv);
         }
 
-        // Append a final close <div> if needed
-        if (needRowDivClose) {
-            $(ROW_DIV_CLOSE).appendTo($(containerId));
-            needRowDivClose = false;
-        }
-
-        // Register a click handler for each tile
-        // I am using a class selector. This may not be appropriate since
-        // there may be other elements on the screen with this class.
-        $(".user-mgmt-edit-icon").click(self.onShowUserDetails);
+        $('#profileModal').modal('show');
+    }
+    
+    // Retrieve the updated profile values, and post to th server
+    // to be persisted
+    function saveUserProfile(eventObject) {
+        console.log("Entered saveUserProfile");
+        
+        
+        // Hide the modal
+        $('#profileModal').modal('hide');
+        
+        // Return false so that the default submit handler does not cause
+        // a page reload. We will handle all form persistance via ajax.
+        return false;
     }
 
 
@@ -138,29 +92,12 @@ CLL.UserProfile = (function () {
 
         // The onclick handler for Click Me button
         $("#displayProfileModal").click(function () {
-            displayUserProfile("Fred");
+            loadUserProfile("Fred");
         });
+        
+        // Register a handler for the 'Save' button on the modal
+        $('#profileForm').submit(saveUserProfile);
     }
-
-    
-    // Return the details for the user with the speicified id. Will throw an
-    // exception of the id is not found.
-    function getUserDetails(userId) {
-        var user, i;
-        console.log("Entered getUserDetails(id='" + userId + "')");
-        for (i=0; i < userList.length; i++) {
-            if (userList[i].id == userId) {
-                console.log("Found user details for id=" + userId);
-                user = userList[i];
-                return user;
-            }
-        }
-    
-        // Should not have gotten here. Means no matching record was found.
-        // @TODO what is the correct error handling for this case?
-        throw new Error("User with id=" + userId + " was not found" );
-    }
-
 
     //=======================================
     // Public Module Variables and Functions
@@ -200,25 +137,6 @@ CLL.UserProfile = (function () {
         displayCompanyName: function (companyName) {
             console.log("Entered displayCompanyName(" + companyName + ")");
             $("#CLL-company-name").html(companyName);
-        },
-        
-        // This method is called when the user selects the 'edit' icon on a tile.
-        // The id of the object associated with the particular tile is passed so
-        // that the user details can be shown in the modal form
-        //
-        // Load the attributes for the particular user, and update the fields in
-        // the form. Then display the form as a modal popup.
-        onShowUserDetails: function(eventObject) {
-            var user;
-            console.log("onEditUserDetails(id='" + eventObject.target.id + "')");
-            //UserProfile.currentUserId = eventObject.target.id;
-
-            // Find the details for the selected user
-            // @TODO Need proper error handling. What if it is an invalid id?
-            user = getUserDetails(eventObject.target.id);
-
-            // Launch the User Editor for the selected user
-            CLL.UserEditor.editUser(user);
         }
         
     };
