@@ -57,12 +57,8 @@ CLL.UserProfile = (function () {
         console.log("Entered showUserProfile()");
         
         for (key in originalProfile) {
-            // Check if the field is empty (designated by ""). If not
-            // populate the form with the value
-            if ("" !== modifiedProfile[key]) {
-                formField = "#" + key;
-                $(formField).val(modifiedProfile[key]);
-            }
+            formField = "#" + key;
+            $(formField).val(modifiedProfile[key]);
         }
 
         $('#profileModal').modal('show');
@@ -71,9 +67,36 @@ CLL.UserProfile = (function () {
     // Retrieve the updated profile values, and post to th server
     // to be persisted
     function saveUserProfile(eventObject) {
+        var key,
+            formField,
+            profileJSON;
         console.log("Entered saveUserProfile");
-        
-        
+
+        for (key in originalProfile) {
+            formField = "#" + key;
+            modifiedProfile[key] = $(formField).val();
+            if (originalProfile[key] !== modifiedProfile[key]) {
+                console.log("Value[" + key + "] changed: " + modifiedProfile[key]);
+            }
+        }
+
+
+        // Send the data to the server to be persisted. Expect a return
+        // Results object {success: [true|false], message: [A string message]}
+        // NOTE: if pass modifiedProfile, Liferay parses and creates set
+        // of key/value pairs on the server. getParameter can access the values.
+        //
+        // NOTE2: Trying to pass {"data" : stringified_json}. My theory is I will get a parameter
+        // 'data' with a value of the stringified json. Then can use GSON to easily parse.
+        profileJSON = JSON.stringify(modifiedProfile);
+
+        $.post(self.postProfileURL, {"data": profileJSON}, function (data, status, jqXHR) {
+            console.log("saveUserProfile - POST succeeded");
+        }, "json").error( function (data, status, jqXHR) {
+            console.log("Ajax POST FAILED - " + status);
+            alert("Could not save the profile:" + status);
+        });
+
         // Hide the modal
         $('#profileModal').modal('hide');
         
@@ -104,6 +127,7 @@ CLL.UserProfile = (function () {
     //=======================================
     return {
         profileURL: "",
+        postProfileURL: "",
 
         // Initialize the UserProfile module. This method must be called prior to
         // any other operations.

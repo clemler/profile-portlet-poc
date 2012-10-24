@@ -6,7 +6,10 @@
 package org.lemler.profileportlet;
 
 import java.io.IOException;
+import java.io.BufferedReader;
 import javax.portlet.*;
+import java.util.Scanner;
+import java.util.Enumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
@@ -67,6 +70,9 @@ public class ProfilePortlet extends GenericPortlet {
         if ("get-profile".equals(resourceID)) {
             getUserProfile(request, response);
         }
+        else if ("post-profile".equals(resourceID)) {
+            saveUserProfile(request, response);
+        }
         else {  // This is an error that needs to be handled
             log.error("serveResource() - Invalid resourceID: {}", resourceID);
         }
@@ -101,6 +107,39 @@ public class ProfilePortlet extends GenericPortlet {
         
         //write string to the output stream and we´re finished  
         response.getPortletOutputStream().write(json.getBytes());
+     }
+     
+     
+     /**
+     * Retrieve the profile information for the specified user and
+     * return it via JSON. The method requires that the resource
+     * requestID was 'get-profile'.
+     *
+     * @param request
+     * @param response
+     * @throws PortletException
+     * @throws IOException
+     */
+     protected void saveUserProfile(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        String postData = null;
+        UserProfile profile;
+        Gson gson = new Gson();
+
+        log.info("Entered saveUserProfile()");
+        log.info("ParameterMap---> " + request.getParameterMap());
+                
+        // Retrieve the 'data' parameter which will contain the stringified
+        // JSON object. This can be used by GSON to recreate the object.
+        // getParameter() will return null if the requested parameter is
+        // not found.
+        postData = request.getParameter("data");
+        if (null != postData) {
+            log.info("Saving profile data--> {}", postData);
+            profile = gson.fromJson(postData, UserProfile.class);
+            System.out.println("Profile--> " + profile);  
+        } else {
+            log.error("saveUserProfile did not receive the data parameter");
+        }
      }
 
     

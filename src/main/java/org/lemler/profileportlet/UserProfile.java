@@ -93,4 +93,8 @@ public class UserProfile {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+    
+    public String toString() {
+        return (this.firstName + " " + this.lastName);
+    }
 }

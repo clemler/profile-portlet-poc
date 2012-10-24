@@ -38,6 +38,7 @@
 <script type="text/javascript" src="/profile-portlet/js/user-profile-module.js"></script>
 
 <liferay-portlet:resourceURL var="profileUrl" id="get-profile" />
+<liferay-portlet:resourceURL var="postProfileUrl" id="post-profile" />
  
  <!-- Once the document and jquery have loaded, render the page-->   
 <script type="text/javascript">
@@ -47,6 +48,7 @@
     // Initialize CLL.UserProfile
     CLL.UserProfile.init();
     CLL.UserProfile.profileURL = '<%=profileUrl%>';
+    CLL.UserProfile.postProfileURL = '<%=postProfileUrl%>';
     console.log("profileURL --> " + CLL.UserProfile.profileURL);
   });
 </script>
